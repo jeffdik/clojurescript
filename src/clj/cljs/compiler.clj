@@ -306,19 +306,13 @@ goog.require = function(rule){Packages.clojure.lang.RT[\"var\"](\"cljs.compiler\
       (print (str arglist ")"))
       (dotimes [_ i] (print ")"))
       (println ";"))
-    (if (< 1 (count params))
-      (do
-        (print (str "var " (last params) " = cljs.core.rest("))
-        (dotimes [_ (- (count params) 2)] (print "cljs.core.next("))
-        (print arglist)
-        (dotimes [_ (- (count params) 2)] (print ")"))
-        (println ");")
-        (println (str "return " name ".call(" (string/join ", " (cons "null" params)) ");")))
-      (do
-        (print (str "var " (last params) " = "))
-        (print "Array.prototype.slice.call(" arglist ", 0);")
-        (println ";")
-        (println (str "return " name ".apply(" (string/join ", " (cons "null" ["arguments"])) ");"))))
+    (do
+      (print (str "var " (last params) " = cljs.core.rest("))
+      (dotimes [_ (- (count params) 2)] (print "cljs.core.next("))
+      (print arglist)
+      (dotimes [_ (- (count params) 2)] (print ")"))
+      (println ");")
+      (println (str "return " name ".call(" (string/join ", " (cons "null" params)) ");")))
     (print "})")))
 
 (defn emit-fn-method
@@ -345,7 +339,7 @@ goog.require = function(rule){Packages.clojure.lang.RT[\"var\"](\"cljs.compiler\
                  (println (str "var " gthis " = this;")))
                (when variadic
                  (println (str "var " (last params) " = null;"))
-                 (println (str "if (typeof var_args !== 'undefined') {"))
+                 (println (str "if (goog.isDef(var_args)) {"))
                  (println (str "  " (last params) " = cljs.core.array_seq(Array.prototype.slice.call(arguments, " (dec (count params)) "),0);"))
                  (println (str "} "))
                  )
