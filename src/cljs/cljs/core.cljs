@@ -1246,7 +1246,7 @@ reduces them without incurring seq initialization"
   ([f args]
      (let [fixed-arity (. f cljs$lang$maxFixedArity)]
        (if (. f cljs$lang$applyTo)
-         (if (<= (bounded-count args fixed-arity)
+         (if (<= (bounded-count args (inc fixed-arity))
                  fixed-arity)
            (. f apply f (to-array args))
            (. f cljs$lang$applyTo args))
@@ -3249,4 +3249,5 @@ reduces them without incurring seq initialization"
 #_(goog.global/print (assoc {} :a 1))
 
 
+(defn single-arity-variadic-fixedargs [x y & more] more)
 
