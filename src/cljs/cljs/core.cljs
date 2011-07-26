@@ -3251,3 +3251,10 @@ reduces them without incurring seq initialization"
 
 (defn single-arity-variadic-fixedargs [x y & more] more)
 
+(defn single-arity-non-variadic [x y z] x)
+
+(defn multiple-arity-non-variadic ([x] x) ([x y] y) ([x y z] z))
+
+(defn single-arity-variadic-nofixedargs [& more] more)
+
+(defn multiple-arity-variadic ([x] x) ([x y] y) ([x y & more] more))

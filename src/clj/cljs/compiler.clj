@@ -317,7 +317,7 @@ goog.require = function(rule){Packages.clojure.lang.RT[\"var\"](\"cljs.compiler\
         (println (str "return " n ".call(" (string/join ", " (cons "null" params)) ");")))
       (do
         (print (str "var " (last params) " = "))
-        (print "Array.prototype.slice.call(" arglist ", 0);")
+        (print "cljs.core.seq(" arglist ");")
         (println ";")
         (println (str "return " n ".call(" (string/join ", " (cons "null" params)) ");"))))
     (print "})")))
@@ -405,7 +405,7 @@ goog.require = function(rule){Packages.clojure.lang.RT[\"var\"](\"cljs.compiler\
         (println "}")
         (println "throw('Invalid arity: ' + arguments.length);")
         (println "};")
-        (when variadic
+        #_(when variadic
           (println (str name ".cljs$lang$maxFixedArity = " max-fixed-arity ";"))
           (println (str name ".cljs$lang$applyTo = "
                         (with-out-str
