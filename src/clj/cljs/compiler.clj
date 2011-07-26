@@ -405,16 +405,9 @@ goog.require = function(rule){Packages.clojure.lang.RT[\"var\"](\"cljs.compiler\
         (println "}")
         (println "throw('Invalid arity: ' + arguments.length);")
         (println "};")
-        #_(when variadic
+        (when variadic
           (println (str name ".cljs$lang$maxFixedArity = " max-fixed-arity ";"))
-          (println (str name ".cljs$lang$applyTo = "
-                        (with-out-str
-                          (emit-apply-to
-                           (some (fn [[n meth]]
-                                   (when (:variadic meth)
-                                     (assoc meth :name n)))
-                                 ms)))
-                        ";")))
+          (println (str name ".cljs$lang$applyTo = " (some #(let [[n m] %] (when (:variadic m) n)) ms) ".cljs$lang$applyTo;")))
         (println (str "return " name ";"))
         (println "})()")))))
 
