@@ -2871,12 +2871,14 @@ reduces them without incurring seq initialization"
   (assert (= 63 (apply + 1 2 4 8 16 (list 32))))
   (assert (= 127 (apply + 1 2 4 8 16 (list 32 64))))
   (assert (= 4950 (apply + (take 100 (iterate inc 0)))))
+  (assert (= () (apply list [])))
+  (assert (= [1 2 3] (apply list [1 2 3])))
   ;; apply with infinite sequence
-  ;; (assert (= 3 (apply (fn [& args]
-  ;;                       (+ (nth args 0)
-  ;;                          (nth args 1)
-  ;;                          (nth args 2)))
-  ;;                     (iterate inc 0))))
+  (assert (= 3 (apply (fn [& args]
+                        (+ (nth args 0)
+                           (nth args 1)
+                           (nth args 2)))
+                      (iterate inc 0))))
   (let [a (atom 0)]
     (assert (= 0 (deref a)))
     (assert (= 1 (swap! a inc)))
